@@ -4,9 +4,8 @@
   "description": "Simple CRUD API",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js",
-    "start:prod": "npm run build && node dist/bundle.js",
     "start:dev": "nodemon app.js",
+    "start:prod": "npm run build && node dist/bundle.js",
     "build": "webpack",
     "test": "jest"
   },
