@@ -4,8 +4,15 @@
   "description": "Simple CRUD API",
   "main": "app.js",
   "scripts": {
-    "start": "node app.js"
+    "start": "node -r dotenv/config app.js",
+    "dev": "nodemon -r dotenv/config app.js"
   },
   "author": "LilDev1l",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^10.0.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
+  }
 }
