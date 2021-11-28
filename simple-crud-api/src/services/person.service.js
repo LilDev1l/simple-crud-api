@@ -34,7 +34,27 @@ function remove(id) {
 }
 
 function validPerson(person) {
-    return person.name && person.age && person.hobbies;
+    let rs = true;
+
+    if (person.name && person.age && person.hobbies) {
+        rs &= checkType(person.name, 'string')
+        rs &= checkType(person.age, 'number')
+        rs &= Array.isArray(person.hobbies);
+
+        if (rs)
+            person.hobbies.forEach(hobby => {
+                rs &= checkType(hobby, 'string')
+            })
+    } else {
+        rs = false;
+    }
+
+    return rs;
+}
+
+function checkType(value, nameType) {
+    const type = typeof value;
+    return type === nameType;
 }
 
 module.exports = {
