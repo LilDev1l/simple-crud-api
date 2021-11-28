@@ -1,5 +1,6 @@
 const http = require('http');
 const {personController} = require('./controllers/person.controller');
+const customErrors = require('./errors/index');
 
 function startServer() {
     const server = http.createServer();
@@ -15,8 +16,14 @@ function startServer() {
                 res.end(JSON.stringify({message: 'Resource that you requested doesn\'t exist'}));
             }
         } catch (err) {
-            res.statusCode = 500;
-            res.end(JSON.stringify({message: 'Server error'}));
+            if (err instanceof customErrors.NotFoundPersonError ||
+                err instanceof customErrors.InvalidDataInRequestError) {
+                res.statusCode = err.statusCode;
+                res.end(JSON.stringify({message: err.message}));
+            } else {
+                res.statusCode = 500;
+                res.end(JSON.stringify({message: 'Server error'}));
+            }
         }
     });
 

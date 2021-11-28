@@ -1,5 +1,6 @@
 const {validate: uuidValidate} = require('uuid');
 const DB = require('../db');
+const customErrors = require('../errors/index');
 
 function getAll() {
     return DB.select();
@@ -7,28 +8,33 @@ function getAll() {
 
 function getOne(id) {
     if (!uuidValidate(id)) {
-        throw new Error('Invalid data in request');
+        throw new customErrors.InvalidDataInRequestError(400, 'Invalid data in request');
     }
-    return DB.select(person => person.id === id);
+
+    const person = DB.select(person => person.id === id)[0];
+    if (!person) {
+        throw new customErrors.NotFoundPersonError(404, 'Not found person in request');
+    }
+    return person;
 }
 
 function add(person) {
     if (!validPerson(person)) {
-        throw new Error('Invalid data in request');
+        throw new customErrors.InvalidDataInRequestError(400, 'Invalid data in request');
     }
     return DB.insert(person);
 }
 
 function replace(id, person) {
     if (!uuidValidate(id)) {
-        throw new Error('Invalid data in request');
+        throw new customErrors.InvalidDataInRequestError(400, 'Invalid data in request');
     }
     return DB.update(id, person);
 }
 
 function remove(id) {
     if (!uuidValidate(id)) {
-        throw new Error('Invalid data in request');
+        throw new customErrors.InvalidDataInRequestError(400, 'Invalid data in request');
     }
     DB.delete(id);
 }
